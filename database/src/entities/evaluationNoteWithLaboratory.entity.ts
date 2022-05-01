@@ -5,4 +5,8 @@ import { EvaluationNote } from './evaluationNote.entity';
 export class EvaluationNoteWithLaboratory extends EvaluationNote {
   @Column()
   practical: number;
+
+  average(): number {
+    return (this.theoretical + this.practical) / 2;
+  }
 }

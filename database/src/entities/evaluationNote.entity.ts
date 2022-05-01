@@ -13,4 +13,8 @@ export class EvaluationNote {
 
   @Column({ default: 0 })
   theoretical: number;
+
+  average(): number {
+    return this.theoretical;
+  }
 }

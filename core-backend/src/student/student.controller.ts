@@ -19,6 +19,11 @@ export class StudentController {
     return this.studentService.getAll();
   }
 
+  @Get('average/:id')
+  get(@Param('id') id: number) {
+    return this.studentService.getAverage(id);
+  }
+
   @Post()
   create(@Body() studentRequest: StudentRequest) {
     return this.studentService.create(studentRequest);

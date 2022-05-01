@@ -24,4 +24,8 @@ export class StudentService {
   delete(id: number) {
     return this.serviceClient.send({ cmd: 'delete-student' }, { id });
   }
+
+  getAverage(id: number) {
+    return this.serviceClient.send({ cmd: 'average' }, { id });
+  }
 }

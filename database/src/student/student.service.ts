@@ -6,6 +6,7 @@ import { StudentCourseProfessor } from 'src/entities/studentCourseProfessor.enti
 import { Repository } from 'typeorm';
 import { RegisterDTO } from './register.dto';
 import { Student } from './student.entity';
+import { StudentAverageDTO } from './studentAverage.dto';
 
 @Injectable()
 export class StudentService {
@@ -80,5 +81,29 @@ export class StudentService {
     courseTaken.courseProfessor = currentCourseProfessor;
 
     return this.studentCourseProfessorRepository.save(courseTaken);
+  }
+
+  async average(id: number): Promise<StudentAverageDTO[]> {
+    const allCourseTaken = await this.studentCourseProfessorRepository.find({
+      where: { student: id },
+      relations: [
+        'evaluationNote',
+        'courseProfessor',
+        'courseProfessor.course',
+        'courseProfessor.professor',
+      ],
+    });
+    const allCourseAverage = [];
+    allCourseTaken.forEach((c) =>
+      allCourseAverage.push(
+        new StudentAverageDTO(
+          c.courseProfessor.course.name,
+          c.courseProfessor.professor.name,
+          c.evaluationNote.average(),
+        ),
+      ),
+    );
+
+    return allCourseAverage;
   }
 }

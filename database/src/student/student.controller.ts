@@ -44,4 +44,9 @@ export class StudentController {
   async register(@Body() registerDTO: RegisterDTO) {
     return this.studentService.register(registerDTO);
   }
+
+  @MessagePattern({ cmd: 'average' })
+  async average(@Body() data) {
+    return this.studentService.average(data.id);
+  }
 }
