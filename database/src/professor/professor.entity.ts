@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { CourseProfessor } from 'src/entities/courseProfessor.entity';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
 export class Professor {
@@ -16,4 +17,10 @@ export class Professor {
 
   @Column()
   email: string;
+
+  @OneToMany(
+    () => CourseProfessor,
+    (courseProfessor: CourseProfessor) => courseProfessor.id,
+  )
+  courseProfessor: CourseProfessor[];
 }
