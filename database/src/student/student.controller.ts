@@ -8,6 +8,7 @@ import {
   Put,
 } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
+import { RegisterDTO } from './register.dto';
 import { StudentDTO } from './student.dto';
 import { StudentService } from './student.service';
 
@@ -37,5 +38,10 @@ export class StudentController {
   @Delete(':id')
   async delete(@Param('id') id, @Body() data) {
     return this.studentService.remove(data.id);
+  }
+
+  @Post('register')
+  async register(@Body() registerDTO: RegisterDTO) {
+    return this.studentService.register(registerDTO);
   }
 }

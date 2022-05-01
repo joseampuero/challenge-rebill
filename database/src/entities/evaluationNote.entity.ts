@@ -11,6 +11,6 @@ export class EvaluationNote {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column()
+  @Column({ default: 0 })
   theoretical: number;
 }

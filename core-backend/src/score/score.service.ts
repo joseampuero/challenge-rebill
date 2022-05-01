@@ -1,12 +1,12 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
-import { CreateScoreRequest } from './createScoreRequest.dto';
+import { UpdateScoreRequest } from './updateScoreRequest.dto';
 
 @Injectable()
 export class ScoreService {
   constructor(@Inject('SERVICE') private readonly serviceClient: ClientProxy) {}
 
-  create(createScoreRequest: CreateScoreRequest) {
-    return this.serviceClient.send({ cmd: 'new-score' }, createScoreRequest);
+  update(updateScoreRequest: UpdateScoreRequest) {
+    return this.serviceClient.send({ cmd: 'new-score' }, updateScoreRequest);
   }
 }

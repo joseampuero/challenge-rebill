@@ -1,6 +1,10 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { CourseProfessor } from 'src/entities/courseProfessor.entity';
+import { EvaluationNote } from 'src/entities/evaluationNote.entity';
+import { StudentCourseProfessor } from 'src/entities/studentCourseProfessor.entity';
 import { Repository } from 'typeorm';
+import { RegisterDTO } from './register.dto';
 import { Student } from './student.entity';
 
 @Injectable()
@@ -8,6 +12,12 @@ export class StudentService {
   constructor(
     @InjectRepository(Student)
     private readonly studentRepository: Repository<Student>,
+    @InjectRepository(EvaluationNote)
+    private readonly evaluationNoteRepository: Repository<EvaluationNote>,
+    @InjectRepository(StudentCourseProfessor)
+    private readonly studentCourseProfessorRepository: Repository<StudentCourseProfessor>,
+    @InjectRepository(CourseProfessor)
+    private readonly courseProfessorRepository: Repository<CourseProfessor>,
   ) {}
 
   async getAll(): Promise<Student[]> {
@@ -44,5 +54,31 @@ export class StudentService {
       throw new NotFoundException('No se encontro Estudiante');
 
     await this.studentRepository.delete(id);
+  }
+
+  async register(registerDTO: RegisterDTO): Promise<StudentCourseProfessor> {
+    const evaluationNote = await this.evaluationNoteRepository.save(
+      new EvaluationNote(),
+    );
+
+    const currentStudent = await this.studentRepository.findOne(
+      registerDTO.studentId,
+    );
+
+    const currentCourseProfessor = await this.courseProfessorRepository.findOne(
+      {
+        where: {
+          course: registerDTO.courseId,
+          professor: registerDTO.professorId,
+        },
+      },
+    );
+
+    const courseTaken = new StudentCourseProfessor();
+    courseTaken.student = currentStudent;
+    courseTaken.evaluationNote = evaluationNote;
+    courseTaken.courseProfessor = currentCourseProfessor;
+
+    return this.studentCourseProfessorRepository.save(courseTaken);
   }
 }
