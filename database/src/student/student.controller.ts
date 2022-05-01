@@ -27,13 +27,15 @@ export class StudentController {
     return this.studentService.create(studentDTO);
   }
 
+  @MessagePattern({ cmd: 'update-student' })
   @Put(':id')
-  async update(@Param('id') id, @Body() studentDTO: StudentDTO) {
-    return this.studentService.update(id, studentDTO);
+  async update(@Param('id') id, @Body() data) {
+    return this.studentService.update(data.id, data.studentRequest);
   }
 
+  @MessagePattern({ cmd: 'delete-student' })
   @Delete(':id')
-  async delete(@Body('id') id: number) {
-    this.studentService.remove(id);
+  async delete(@Param('id') id, @Body() data) {
+    return this.studentService.remove(data.id);
   }
 }

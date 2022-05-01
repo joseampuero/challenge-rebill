@@ -5,6 +5,9 @@ import { AppService } from './app.service';
 import { StudentController } from './student/student.controller';
 import { StudentService } from './student/student.service';
 import { StudentModule } from './student/student.module';
+import { ScoreController } from './score/score.controller';
+import { ScoreService } from './score/score.service';
+import { ScoreModule } from './score/score.module';
 
 @Module({
   imports: [
@@ -18,8 +21,9 @@ import { StudentModule } from './student/student.module';
       },
     ]),
     StudentModule,
+    ScoreModule,
   ],
-  controllers: [AppController, StudentController],
-  providers: [AppService, StudentService],
+  controllers: [AppController, StudentController, ScoreController],
+  providers: [AppService, StudentService, ScoreService],
 })
 export class AppModule {}
