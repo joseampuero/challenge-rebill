@@ -3,12 +3,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { Course } from './course/course.entity';
+import { CourseModule } from './course/course.module';
 import { CourseWithLaboratory } from './course/courseWithLaboratory.entity';
 import { CourseProfessor } from './entities/courseProfessor.entity';
 import { EvaluationNote } from './entities/evaluationNote.entity';
 import { EvaluationNoteWithLaboratory } from './entities/evaluationNoteWithLaboratory.entity';
 import { StudentCourseProfessor } from './entities/studentCourseProfessor.entity';
 import { Professor } from './professor/professor.entity';
+import { ProfessorModule } from './professor/professor.module';
 import { Student } from './student/student.entity';
 import { StudentModule } from './student/student.module';
 
@@ -34,6 +36,8 @@ import { StudentModule } from './student/student.module';
       synchronize: true,
     }),
     StudentModule,
+    ProfessorModule,
+    CourseModule,
   ],
   controllers: [AppController],
   providers: [AppService],

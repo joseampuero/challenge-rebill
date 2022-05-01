@@ -1,17 +1,25 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { CourseDTO } from './course.dto';
 import { Course } from './course.entity';
+import { CourseWithLaboratoryDTO } from './courseWithLaboratory.dto';
+import { CourseWithLaboratory } from './courseWithLaboratory.entity';
 
 @Injectable()
 export class CourseService {
   constructor(
     @InjectRepository(Course)
     private readonly courseRepository: Repository<Course>,
+    @InjectRepository(CourseWithLaboratory)
+    private readonly courseWithLaboratoryRepository: Repository<CourseWithLaboratory>,
   ) {}
 
   async getAll(): Promise<Course[]> {
-    return this.courseRepository.find();
+    const courseWithLaboratory =
+      await this.courseWithLaboratoryRepository.find();
+    const courses = await this.courseRepository.find();
+    return courses.concat(courseWithLaboratory);
   }
 
   async get(id: number): Promise<Course> {
@@ -22,12 +30,18 @@ export class CourseService {
     return course;
   }
 
-  async create(course): Promise<Course> {
+  async create(course: CourseDTO): Promise<Course> {
     return this.courseRepository.save(course);
   }
 
-  async update(course): Promise<Course> {
-    const courseToUpdate = await this.courseRepository.findOne(course.id);
+  async createWithLaboratory(
+    course: CourseWithLaboratoryDTO,
+  ): Promise<CourseWithLaboratory> {
+    return this.courseWithLaboratoryRepository.save(course);
+  }
+
+  async update(id, course): Promise<Course> {
+    const courseToUpdate = await this.courseRepository.findOne(id);
 
     if (!courseToUpdate) throw new NotFoundException('No se encontro Curso');
 

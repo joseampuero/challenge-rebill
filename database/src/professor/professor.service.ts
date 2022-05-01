@@ -26,10 +26,8 @@ export class ProfessorService {
     return this.professorRepository.save(professor);
   }
 
-  async update(professor): Promise<Professor> {
-    const professorToUpdate = await this.professorRepository.findOne(
-      professor.id,
-    );
+  async update(id, professor): Promise<Professor> {
+    const professorToUpdate = await this.professorRepository.findOne(id);
 
     if (!professorToUpdate)
       throw new NotFoundException('No se encontro Profesor');
