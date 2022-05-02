@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Course } from 'src/course/course.entity';
+import { CourseWithLaboratory } from 'src/course/courseWithLaboratory.entity';
 import { CourseProfessor } from 'src/entities/courseProfessor.entity';
 import { EvaluationNote } from 'src/entities/evaluationNote.entity';
 import { StudentCourseProfessor } from 'src/entities/studentCourseProfessor.entity';
@@ -22,6 +23,8 @@ export class ProfessorService {
     private readonly studentCourseProfessorRepository: Repository<StudentCourseProfessor>,
     @InjectRepository(EvaluationNote)
     private readonly evaluationNoteRepository: Repository<EvaluationNote>,
+    @InjectRepository(CourseWithLaboratory)
+    private readonly courseWithLaboratoryRepository: Repository<CourseWithLaboratory>,
   ) {}
 
   async getAll(): Promise<Professor[]> {
@@ -60,10 +63,13 @@ export class ProfessorService {
     await this.professorRepository.delete(id);
   }
 
-  async assign(assingDTO: AssingDTO): Promise<CourseProfessor> {
-    const currentCourse = await this.courseRepository.findOne(
-      assingDTO.courseId,
-    );
+  async assign(
+    assingDTO: AssingDTO,
+    withLaboratory: boolean,
+  ): Promise<CourseProfessor> {
+    const currentCourse = !withLaboratory
+      ? await this.courseRepository.findOne(assingDTO.courseId)
+      : await this.courseWithLaboratoryRepository.findOne(assingDTO.courseId);
 
     const currentProfessor = await this.get(assingDTO.professorId);
 

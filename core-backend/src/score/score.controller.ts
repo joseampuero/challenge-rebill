@@ -1,5 +1,8 @@
 import { Body, Controller, Post } from '@nestjs/common';
-import { UpdateScoreRequest as UpdateScoreRequest } from './updateScoreRequest.dto';
+import {
+  UpdateScoreLaboratoryRequest,
+  UpdateScoreRequest as UpdateScoreRequest,
+} from './updateScoreRequest.dto';
 import { ScoreService } from './score.service';
 
 @Controller('score')
@@ -8,6 +11,11 @@ export class ScoreController {
 
   @Post()
   update(@Body() scoreRequest: UpdateScoreRequest) {
+    return this.scoreService.update(scoreRequest);
+  }
+
+  @Post('withLaboratory')
+  updateWithLaboratory(@Body() scoreRequest: UpdateScoreLaboratoryRequest) {
     return this.scoreService.update(scoreRequest);
   }
 }

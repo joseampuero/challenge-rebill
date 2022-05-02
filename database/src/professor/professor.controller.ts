@@ -39,7 +39,12 @@ export class ProfessorController {
 
   @Post('assign')
   async assign(@Body() assingDTO: AssingDTO) {
-    return this.professorService.assign(assingDTO);
+    return this.professorService.assign(assingDTO, false);
+  }
+
+  @Post('assignWithLaboratory')
+  async assignWithLaboratory(@Body() assingDTO: AssingDTO) {
+    return this.professorService.assign(assingDTO, true);
   }
 
   @MessagePattern({ cmd: 'new-score' })

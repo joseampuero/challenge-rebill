@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Course } from 'src/course/course.entity';
+import { CourseWithLaboratory } from 'src/course/courseWithLaboratory.entity';
 import { CourseProfessor } from 'src/entities/courseProfessor.entity';
 import { EvaluationNote } from 'src/entities/evaluationNote.entity';
 import { StudentCourseProfessor } from 'src/entities/studentCourseProfessor.entity';
@@ -14,6 +15,7 @@ import { ProfessorService } from './professor.service';
       Professor,
       CourseProfessor,
       Course,
+      CourseWithLaboratory,
       StudentCourseProfessor,
       EvaluationNote,
     ]),
